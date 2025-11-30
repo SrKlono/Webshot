@@ -31,7 +31,6 @@ async function getWebshot(device, req, res) {
 
 	await page.goto(url);
 	const buffer = await page.screenshot({
-		path: "screenshot.png",
 		fullPage: true,
 	});
 
