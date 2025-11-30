@@ -29,7 +29,7 @@ async function getWebshot(device, req, res) {
 	const context = await browser.newContext(device);
 	const page = await context.newPage();
 
-	await page.goto(url);
+	await page.goto(url, { waitUntil: "networkidle", timeout: 30000 });
 	const buffer = await page.screenshot({
 		fullPage: true,
 	});
