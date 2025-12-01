@@ -35,11 +35,11 @@ async function getWebshot(device, req, res) {
 	const page = await context.newPage();
 
 	try {
-		await page.goto(url, { waitUntil: "load", timeout: 15000 });
+		await page.goto(url, { waitUntil: "load", timeout: 30000 });
 	} catch (error) {
 		console.log("Error in goto website getWebShot lib", error);
 		if (error.name === "TimeoutError") {
-			res.status(408).json({ message: "Timeout 15s exceeded." });
+			res.status(408).json({ message: "Timeout 30s exceeded." });
 			return;
 		}
 		res.status(400).json({ message: "Error loading website" });
