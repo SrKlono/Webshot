@@ -23,7 +23,8 @@ const limiter = rateLimit({
 const router = express.Router();
 
 router.get("/", getDesktopWebshot);
-router.get("/mobile/", getMobileWebshot);
+router.get("/desktop", getDesktopWebshot);
+router.get("/mobile", getMobileWebshot);
 
 app.use(limiter);
 app.use("/", router);

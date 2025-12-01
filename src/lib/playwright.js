@@ -20,6 +20,11 @@ export async function getMobileWebshot(req, res) {
 async function getWebshot(device, req, res) {
 	const url = req.query.url;
 
+	if (!url) {
+		res.status(400).json({ message: "No URL provided" });
+		return;
+	}
+
 	if (!isValidURL(url)) {
 		res.status(400).json({ message: "Invalid URL" });
 		return;
@@ -29,7 +34,18 @@ async function getWebshot(device, req, res) {
 	const context = await browser.newContext(device);
 	const page = await context.newPage();
 
-	await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 });
+	try {
+		await page.goto(url, { waitUntil: "load", timeout: 15000 });
+	} catch (error) {
+		console.log("Error in goto website getWebShot lib", error);
+		if (error.name === "TimeoutError") {
+			res.status(408).json({ message: "Timeout 15s exceeded." });
+			return;
+		}
+		res.status(400).json({ message: "Error loading website" });
+		return;
+	}
+
 	const buffer = await page.screenshot({
 		fullPage: true,
 	});
